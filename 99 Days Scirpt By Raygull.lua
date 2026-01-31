@@ -1,7 +1,33 @@
 --// Script 99 Noites na Floresta com Rayfield GUI //--
 
--- Carregar biblioteca Rayfield UI
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- Mostrar erro na tela se algo falhar (para você saber por que o painel não abre)
+local function showError(msg)
+    local ok, _ = pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "99 Noites – Erro",
+            Text = tostring(msg):sub(1, 100),
+            Duration = 8
+        })
+    end)
+    if not ok then warn("[99 Noites] " .. tostring(msg)) end
+end
+
+-- Carregar biblioteca Rayfield UI (se falhar, o painel não abre)
+local Rayfield = nil
+local okRayfield, errRayfield = pcall(function()
+    local src = game:HttpGet('https://sirius.menu/rayfield')
+    if not src or src == "" then error("Rayfield: resposta vazia (site bloqueado ou offline?)") end
+    Rayfield = loadstring(src)()
+end)
+if not okRayfield then
+    errRayfield = tostring(errRayfield or "Rayfield não carregou")
+    showError("Rayfield: " .. errRayfield .. " (executor pode bloquear sirius.menu)")
+    return
+end
+if not Rayfield then
+    showError("Rayfield retornou nil")
+    return
+end
 
 -- Serviços
 local Players = game:GetService("Players")
@@ -13,7 +39,9 @@ local LocalPlayer = Players.LocalPlayer
 local camera = workspace.CurrentCamera
 
 -- Configuração da janela
-local Window = Rayfield:CreateWindow({
+local Window = nil
+local okWindow, errWindow = pcall(function()
+    Window = Rayfield:CreateWindow({
     Name = "shiftz99nights",
     LoadingTitle = "99 Noites na Floresta",
     LoadingSubtitle = "shiftz99nights",
@@ -29,6 +57,11 @@ local Window = Rayfield:CreateWindow({
     },
     KeySystem = false,
 })
+end)
+if not okWindow or not Window then
+    showError("Janela: " .. tostring(errWindow or "CreateWindow falhou"))
+    return
+end
 
 -- Variáveis
 local teleportTargets = {
