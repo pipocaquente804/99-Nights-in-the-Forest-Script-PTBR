@@ -93,24 +93,29 @@ function mouse1click()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
 end
 
--- Círculo FOV do Aimbot
+-- Círculo FOV do Aimbot (protegido: alguns executores não têm Drawing)
 local AimbotEnabled = false
 local FOVRadius = 100
-local FOVCircle = Drawing.new("Circle")
-FOVCircle.Color = Color3.fromRGB(128, 255, 0)
-FOVCircle.Thickness = 1
-FOVCircle.Radius = FOVRadius
-FOVCircle.Transparency = 0.5
-FOVCircle.Filled = false
-FOVCircle.Visible = false
+local FOVCircle = nil
+local okCircle = pcall(function()
+    FOVCircle = Drawing.new("Circle")
+    FOVCircle.Color = Color3.fromRGB(128, 255, 0)
+    FOVCircle.Thickness = 1
+    FOVCircle.Radius = FOVRadius
+    FOVCircle.Transparency = 0.5
+    FOVCircle.Filled = false
+    FOVCircle.Visible = false
+end)
 
 RunService.RenderStepped:Connect(function()
-    if AimbotEnabled then
-        local mousePos = UserInputService:GetMouseLocation()
-        FOVCircle.Position = Vector2.new(mousePos.X, mousePos.Y)
-        FOVCircle.Visible = true
-    else
-        FOVCircle.Visible = false
+    if FOVCircle then
+        if AimbotEnabled then
+            local mousePos = UserInputService:GetMouseLocation()
+            FOVCircle.Position = Vector2.new(mousePos.X, mousePos.Y)
+            FOVCircle.Visible = true
+        else
+            FOVCircle.Visible = false
+        end
     end
 end)
 
@@ -189,32 +194,32 @@ local npcBoxes = {}
 
 local function createNPCESP(npc)
     if not npc:IsA("Model") or npc:FindFirstChild("HumanoidRootPart") == nil then return end
-
-    local root = npc:FindFirstChild("HumanoidRootPart")
     if npcBoxes[npc] then return end
 
-    local box = Drawing.new("Square")
-    box.Thickness = 2
-    box.Transparency = 1
-    box.Color = Color3.fromRGB(255, 85, 0)
-    box.Filled = false
-    box.Visible = true
-
-    local nameText = Drawing.new("Text")
-    nameText.Text = npc.Name
-    nameText.Color = Color3.fromRGB(255, 255, 255)
-    nameText.Size = 16
-    nameText.Center = true
-    nameText.Outline = true
-    nameText.Visible = true
+    local box, nameText
+    local ok = pcall(function()
+        box = Drawing.new("Square")
+        box.Thickness = 2
+        box.Transparency = 1
+        box.Color = Color3.fromRGB(255, 85, 0)
+        box.Filled = false
+        box.Visible = true
+        nameText = Drawing.new("Text")
+        nameText.Text = npc.Name
+        nameText.Color = Color3.fromRGB(255, 255, 255)
+        nameText.Size = 16
+        nameText.Center = true
+        nameText.Outline = true
+        nameText.Visible = true
+    end)
+    if not ok or not box or not nameText then return end
 
     npcBoxes[npc] = {box = box, name = nameText}
 
-    -- Limpar ao remover
     npc.AncestryChanged:Connect(function(_, parent)
         if not parent and npcBoxes[npc] then
-            npcBoxes[npc].box:Remove()
-            npcBoxes[npc].name:Remove()
+            if npcBoxes[npc].box then pcall(function() npcBoxes[npc].box:Remove() end) end
+            if npcBoxes[npc].name then pcall(function() npcBoxes[npc].name:Remove() end) end
             npcBoxes[npc] = nil
         end
     end)
@@ -295,7 +300,7 @@ local smoothness = 0.2 -- Suavidade da câmera
 
 RunService.RenderStepped:Connect(function()
     if not AimbotEnabled or not UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
-        FOVCircle.Visible = false
+        if FOVCircle then FOVCircle.Visible = false end
         return
     end
 
@@ -326,10 +331,12 @@ RunService.RenderStepped:Connect(function()
         local currentCF = camera.CFrame
         local targetCF = CFrame.new(camera.CFrame.Position, closestTarget.Position)
         camera.CFrame = currentCF:Lerp(targetCF, smoothness) -- Girar câmera suavemente
-        FOVCircle.Position = Vector2.new(mousePos.X, mousePos.Y)
-        FOVCircle.Visible = true
+        if FOVCircle then
+            FOVCircle.Position = Vector2.new(mousePos.X, mousePos.Y)
+            FOVCircle.Visible = true
+        end
     else
-        FOVCircle.Visible = false
+        if FOVCircle then FOVCircle.Visible = false end
     end
 end)
 
@@ -583,9 +590,24 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- Coordenadas e FPS (Drawing)
-coordsText = Drawing.new("Text"); coordsText.Size = 16; coordsText.Center = true; coordsText.Outline = true; coordsText.Color = Color3.new(1,1,1); coordsText.Visible = false
-fpsText = Drawing.new("Text"); fpsText.Size = 16; fpsText.Center = true; fpsText.Outline = true; fpsText.Color = Color3.new(0,1,0); fpsText.Position = Vector2.new(100, 50); fpsText.Visible = false
+-- Coordenadas e FPS (Drawing) — protegido para executores sem Drawing
+coordsText = nil
+fpsText = nil
+pcall(function()
+    coordsText = Drawing.new("Text")
+    coordsText.Size = 16
+    coordsText.Center = true
+    coordsText.Outline = true
+    coordsText.Color = Color3.new(1,1,1)
+    coordsText.Visible = false
+    fpsText = Drawing.new("Text")
+    fpsText.Size = 16
+    fpsText.Center = true
+    fpsText.Outline = true
+    fpsText.Color = Color3.new(0,1,0)
+    fpsText.Position = Vector2.new(100, 50)
+    fpsText.Visible = false
+end)
 local lastTime, frames = tick(), 0
 RunService.RenderStepped:Connect(function()
     if coordsText then
@@ -644,8 +666,8 @@ RunService.RenderStepped:Connect(function()
     for npc, visuals in pairs(npcBoxes) do
         local box = visuals.box
         local name = visuals.name
-
-        if npc and npc:FindFirstChild("HumanoidRootPart") then
+        if not box or not name then npcBoxes[npc] = nil
+        elseif npc and npc:FindFirstChild("HumanoidRootPart") then
             local hrp = npc.HumanoidRootPart
             local size = Vector2.new(60, 80)
             local screenPos, onScreen = camera:WorldToViewportPoint(hrp.Position)
@@ -654,7 +676,6 @@ RunService.RenderStepped:Connect(function()
                 box.Position = Vector2.new(screenPos.X - size.X / 2, screenPos.Y - size.Y / 2)
                 box.Size = size
                 box.Visible = true
-
                 name.Position = Vector2.new(screenPos.X, screenPos.Y - size.Y / 2 - 15)
                 name.Visible = true
             else
@@ -662,8 +683,8 @@ RunService.RenderStepped:Connect(function()
                 name.Visible = false
             end
         else
-            box:Remove()
-            name:Remove()
+            pcall(function() box:Remove() end)
+            pcall(function() name:Remove() end)
             npcBoxes[npc] = nil
         end
     end

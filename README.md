@@ -1,27 +1,79 @@
 # 99 Noites na Floresta – Script
 
-### 🚀 Carregador rápido
-Copie e cole um dos códigos abaixo no seu executor de Roblox:
+### 🚀 Carregador rápido (PT-BR)
+**Use o código abaixo no executor** — aponta para este repositório (PT-BR):
 
 ### 🌟 Versão estável
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/raygull3d/99-Nights-in-the-Forest-Script/refs/heads/main/99%20Days%20Scirpt%20By%20Raygull.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/pipocaquente804/99-Nights-in-the-Forest-Script-PTBR/main/99%20Days%20Scirpt%20By%20Raygull.lua"))()
 ```
 
 ### 🧪 Versão beta
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/raygull3d/99-Nights-in-the-Forest-Script/refs/heads/main/99%20Days%20Scirpt%20By%20Raygull%20Beta%201.0.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/pipocaquente804/99-Nights-in-the-Forest-Script-PTBR/main/99%20Days%20Scirpt%20By%20Raygull%20Beta%201.0.lua"))()
 ```
 
-### ✨ Recursos
-- **Teletransporte:** Viaje na hora para fogueira, moedor ou qualquer item
-- **ESP de itens e NPCs:** Veja itens valiosos e inimigos através das paredes
-- **Aimbot:** Segure o botão direito do mouse para travar no alvo
-- **Modo voar:** WASD + Espaço/Shift para liberdade total (Q para começar e parar de voar)
-- **Speedhack:** Velocidade de caminhada ajustável
-- **Auto farming:** Farm automático de troncos e árvores (farm automático de troncos não está funcionando)
-- **Anti-morte:** Teletransporte automático para lugar seguro quando houver perigo por perto
-- **Sem neblina:** Ative para visão limpa a qualquer momento
+**Se não abrir:** tente com `refs/heads/main` na URL (troque `/main/` por `/refs/heads/main/`):
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/pipocaquente804/99-Nights-in-the-Forest-Script-PTBR/refs/heads/main/99%20Days%20Scirpt%20By%20Raygull.lua"))()
+```
+
+**Se ainda não funcionar:**  
+1. Confirme que o repositório **pipocaquente804/99-Nights-in-the-Forest-Script-PTBR** existe no GitHub.  
+2. Os arquivos `.lua` precisam estar na branch **main**.  
+3. Se o executor bloquear GitHub, use [pastebin](https://pastebin.com) (link raw) ou carregue o script localmente (arquivo no PC).
+
+### ✨ Recursos (50+ opções)
+
+**Proteção (Indetectável / Antiban)**  
+- **Indetectável / Antiban:** Delays aleatórios e menos ações para reduzir detecção  
+- **Modo seguro:** Menos ações por minuto (antiban)  
+- **Tecla de pânico (END):** Desativa todas as opções na hora  
+
+**Início**  
+- **Teletransporte:** Fogueira, moedor ou qualquer item  
+- **ESP de itens e NPCs:** Ver itens e inimigos através das paredes  
+- **Aimbot:** Clique direito para travar no alvo  
+- **Voar:** WASD + Espaço/Shift (Q para ligar/desligar)  
+- **Vida infinita:** Vida sempre no máximo  
+- **Auto kill mobs:** Mata inimigos ao redor (ajuste o raio em studs)  
+
+**Movimento**  
+- **Sem dano de queda:** Não toma dano ao cair  
+- **No clip:** Atravessar paredes  
+- **Pulo infinito:** Pular várias vezes no ar  
+- **Sprint sempre:** Correr o tempo todo  
+- **Velocidade do voar:** Slider 20–200  
+- **Força do pulo:** Slider  
+- **Gravidade:** Slider 0–300  
+
+**Visão**  
+- **Fullbright:** Luz máxima no mapa  
+- **Visão noturna:** Ver melhor no escuro  
+- **FOV:** Campo de visão (slider 60–120)  
+- **Sem efeitos de tela:** Desativa blur  
+- **Câmera livre (freecam):** Mover câmera com WASD  
+
+**Extras**  
+- **Auto coletar:** Pega itens perto (tecla E)  
+- **Anti-AFK:** Evita kick por inatividade  
+- **Durabilidade infinita:** Ferramentas não quebram  
+- **Oxigênio infinito:** Respiração infinita debaixo d’água  
+- **Personagem invisível:** Transparência total  
+- **Mostrar coordenadas:** X, Y, Z na tela  
+- **Mostrar FPS:** Contador de FPS  
+- **Notificação quando mob perto:** Aviso de inimigo a menos de 25 studs  
+- **Ímã de itens (client):** Atração de itens (client-side)  
+- **Andar na água (experimental):** Mantém o personagem em cima da água  
+- **Sem recuo (armas):** Menos recuo ao atirar  
+
+**Outros (Beta)**  
+- **Anti-morte:** Teletransporte para fogueira quando inimigo perto  
+- **Sem neblina:** Céu limpo  
+- **Speedhack:** Velocidade de caminhada (slider)  
+- **Farm automático:** Árvores e troncos  
+- **Aba Anti-morte:** Raio e lista de NPCs a evitar  
+- **Farm de troncos:** Saco velho (5) / saco bom (15)
 
 ### ⚠️ Aviso
 Apenas para fins educacionais e de teste.
@@ -29,7 +81,7 @@ Apenas para fins educacionais e de teste.
 O uso de scripts no Roblox pode resultar em banimento. Use por sua conta e risco.
 
 ### 🙏 Créditos
-Script e GUI por Raygull
+Script e GUI por shiftz99nights
 
 ---
 
@@ -57,8 +109,8 @@ git push -u origin main
 
 ### 3. Links no README
 Depois do push, os links do `loadstring` no README passam a funcionar assim:
-- Troque `raygull3d` pelo **seu** nome de usuário do GitHub.
-- A URL deve apontar para o repositório **seu**, por exemplo:
+- Troque `SEU_USUARIO` pelo **seu** nome de usuário do GitHub (ex: shiftz99nights).
+- A URL deve usar o **branch** (ex.: `main`), não `refs/heads/main`:
   `https://raw.githubusercontent.com/SEU_USUARIO/99-Nights-in-the-Forest-Script/main/99%20Days%20Scirpt%20By%20Raygull.lua`
 
 ### 4. Se pedir login no `git push`
